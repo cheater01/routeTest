@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        li{
+            list-style: none;
+        }
+        a
+        {
+            display: block;
+            width: 100px;
+            height: 100px;
+            background-color:greenyellow;
+        }
+    </style>
+    <script src="lib/Angular/angular.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+
+</head>
+<body ng-app="myApp">
+    <ul>
+        <li><a href="#/a">1</a></li>
+        <li><a href="#/b">2</a></li>
+        <li><a href="#/c">3</a></li>
+    </ul>
+    <div ng-view=""></div>
+
+    <script id="myTemplate" type="text/ng-template">
+    {{title}}
+    </script>
+     <script>
+         (function(angular){
+             var myApp=angular.module("myApp",["ngRoute"]);
+             myApp.config(["$routeProvider",function($routeProvider){
+                 $routeProvider
+                         .when("/a",{
+                             controller:"AController",
+                             templateUrl:"myTemplate"
+                         })
+                         .when("/b",{
+                             controller:"BController",
+                             templateUrl:"./views/b.html"
+                         })
+                         .when("/c",{
+                             controller:"CController",
+                             templateUrl:"./views/c.html"
+                         })
+                         .when("/study/:name",{
+                             controller:"DController",
+                             templateUrl:"./views/d.html"
+                         }
+                          )
+                         .otherwise(
+                         {
+                             redirectTo:"/a"
+                         }
+                 )
+             }]);
+             myApp.controller("AController",["$scope",function($scope){
+                 $scope.title="hi this is Acontroller";
+             }]);
+             myApp.controller("BController",["$scope",function($scope){
+                 $scope.title="this is Bcoltroller";
+             }]);
+             myApp.controller("CController",["$scope",function($scope){
+                 $scope.title="this is C!!!";
+             }]);
+             myApp.controller("DController",["$scope","$routeParams",function($scope,$routeParams){
+                 $scope.title=$routeParams["name"];
+             }]);
+         }(angular));
+     </script>
+
+
+</body>
+</html>
